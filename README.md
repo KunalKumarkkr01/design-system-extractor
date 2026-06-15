@@ -17,29 +17,41 @@ system; it explores the site and writes the reference for you.
 
 ---
 
-## ⚠️ Requirement: Chrome DevTools MCP
+## ⚠️ Requirement: Chrome DevTools for agents
 
-This skill **cannot run without the [Chrome DevTools MCP server](https://github.com/ChromeDevTools/chrome-devtools-mcp)**
-(`chrome-devtools-mcp`, by the Chrome DevTools team). That server is what lets the agent
-navigate pages, read computed styles, and take screenshots from a real Chrome instance.
+This skill **cannot run without [Chrome DevTools for agents](https://developer.chrome.com/docs/devtools/agents)** —
+the official Chrome offering that ships **both an MCP server and agent skills**
+(`chrome-devtools-mcp`, by the Chrome DevTools team). It's what lets the agent navigate
+pages, read computed styles, and screenshot from a real Chrome instance.
 
-You need a recent **Node.js** and a local **Chrome/Chromium** install. There are two ways
-to wire it up:
+You need **Node.js LTS** and **Chrome (current stable or newer)**. Wire it up any one of:
 
-- **Easiest — install the Claude Code plugin below.** It *bundles* a `chrome-devtools`
-  MCP server entry, so installing the plugin sets up both the skill and the browser
-  driver. Just restart Claude Code afterwards.
-- **Manual — add the server to your agent's MCP config:**
+- **Official Chrome DevTools plugin (recommended)** — MCP + Chrome's own usage skills:
+  ```text
+  /plugin marketplace add ChromeDevTools/chrome-devtools-mcp
+  /plugin install chrome-devtools-mcp@chrome-devtools-plugins
+  ```
+- **This package's Claude Code plugin** (below) bundles a `chrome-devtools` MCP server
+  entry, so installing it sets up the driver too. Use either this or the official plugin
+  for the MCP — not both — to avoid a duplicate server.
+- **Manual MCP config** for any agent:
   ```json
   {
     "mcpServers": {
-      "chrome-devtools": { "command": "npx", "args": ["-y", "chrome-devtools-mcp@latest"] }
+      "chrome-devtools": { "command": "npx", "args": ["-y", "chrome-devtools-mcp@latest", "--isolated"] }
     }
   }
   ```
 
-If the MCP tools aren't present, the skill will tell you and stop rather than producing a
-low-quality guess.
+**No Chrome installed?** `chrome-devtools-mcp` uses your system Chrome and won't silently
+download one. Install Chrome normally, or grab a Chrome for Testing build and point the
+server at it:
+
+```bash
+npx puppeteer browsers install chrome   # then pass --executablePath <path> or --channel stable
+```
+
+If the MCP tools aren't present, the skill tells you and stops rather than guessing.
 
 ---
 
@@ -166,5 +178,6 @@ design-system-extractor/
 ## Acknowledgements
 
 Built by Kunal Kumar with [Claude Code](https://claude.com/claude-code) (Anthropic).
-Relies on the [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp)
-server by the Chrome DevTools team.
+Relies on [Chrome DevTools for agents](https://developer.chrome.com/docs/devtools/agents)
+([`chrome-devtools-mcp`](https://github.com/ChromeDevTools/chrome-devtools-mcp)) by the
+Chrome DevTools team.
