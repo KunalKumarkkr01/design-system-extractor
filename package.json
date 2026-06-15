@@ -1,0 +1,44 @@
+{
+  "name": "design-system-extractor",
+  "version": "1.0.0",
+  "description": "Reverse-engineer the design system of any live website into an implementation-ready design.md plus annotated screenshots, by driving a real browser with the Chrome DevTools MCP. Ships as an agent skill (skills.sh + Claude Code plugin) and an npx installer.",
+  "type": "commonjs",
+  "bin": {
+    "design-system-extractor": "bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    ".claude-plugin/",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "chrome-devtools",
+    "chrome-devtools-mcp",
+    "mcp",
+    "claude",
+    "claude-code",
+    "agent-skill",
+    "skills",
+    "ui",
+    "screenshots",
+    "style-guide",
+    "reverse-engineering"
+  ],
+  "author": "Kunal Kumar (https://github.com/KunalKumarkkr01)",
+  "license": "MIT",
+  "homepage": "https://github.com/KunalKumarkkr01/design-system-extractor#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KunalKumarkkr01/design-system-extractor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KunalKumarkkr01/design-system-extractor/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

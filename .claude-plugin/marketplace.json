@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "design-system-extractor",
+  "description": "Single-plugin marketplace for the design-system-extractor skill: reverse-engineer any live website's design system into an implementation-ready reference.",
+  "owner": {
+    "name": "Kunal Kumar",
+    "url": "https://github.com/KunalKumarkkr01"
+  },
+  "plugins": [
+    {
+      "name": "design-system-extractor",
+      "description": "Reverse-engineer the design system of any live website into a design.md plus annotated screenshots an LLM can build from. Bundles the Chrome DevTools MCP server.",
+      "source": ".",
+      "category": "design",
+      "homepage": "https://github.com/KunalKumarkkr01/design-system-extractor"
+    }
+  ]
+}

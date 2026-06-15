@@ -1,0 +1,28 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "design-system-extractor",
+  "version": "1.0.0",
+  "description": "Reverse-engineer the design system of any live website into an implementation-ready design.md plus annotated screenshots, by driving a real browser with the Chrome DevTools MCP. Bundles the chrome-devtools MCP server so it works out of the box.",
+  "author": {
+    "name": "Kunal Kumar",
+    "url": "https://github.com/KunalKumarkkr01"
+  },
+  "homepage": "https://github.com/KunalKumarkkr01/design-system-extractor",
+  "repository": "https://github.com/KunalKumarkkr01/design-system-extractor",
+  "license": "MIT",
+  "keywords": [
+    "design-system",
+    "chrome-devtools",
+    "mcp",
+    "ui",
+    "screenshots",
+    "design-tokens",
+    "reverse-engineering"
+  ],
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    }
+  }
+}
