@@ -78,8 +78,8 @@ function printHelp() {
     `  npx design-system-extractor              install into ./.claude/skills\n` +
     `  npx design-system-extractor --global     install into ~/.claude/skills\n` +
     `  npx design-system-extractor --dir <path> install into a custom skills dir\n\n` +
-    `After installing, ensure the Chrome DevTools MCP server is available:\n` +
-    `  https://github.com/ChromeDevTools/chrome-devtools-mcp\n\n`
+    `After installing, ensure Chrome DevTools for agents (chrome-devtools MCP) is set up:\n` +
+    `  https://developer.chrome.com/docs/devtools/agents\n\n`
   );
 }
 
@@ -103,11 +103,16 @@ function main() {
 
   process.stdout.write(
     `\n✓ Installed "${SKILL_NAME}" to ${target}\n\n` +
-    `Next: this skill needs the Chrome DevTools MCP server to run.\n` +
-    `  • Claude Code: install the design-system-extractor plugin (bundles the MCP), or\n` +
+    `Next: this skill needs Chrome DevTools for agents (the chrome-devtools MCP) to run.\n` +
+    `Docs: https://developer.chrome.com/docs/devtools/agents\n` +
+    `  • Official plugin (recommended, MCP + Chrome's skills) in Claude Code:\n` +
+    `      /plugin marketplace add ChromeDevTools/chrome-devtools-mcp\n` +
+    `      /plugin install chrome-devtools-mcp@chrome-devtools-plugins\n` +
+    `  • Or install the design-system-extractor plugin (bundles the MCP), or\n` +
     `  • add it manually to your agent's MCP config:\n` +
-    `      "chrome-devtools": { "command": "npx", "args": ["-y", "chrome-devtools-mcp@latest"] }\n\n` +
-    `Then ask your agent: "extract the design system of <url>".\n\n`
+    `      "chrome-devtools": { "command": "npx", "args": ["-y", "chrome-devtools-mcp@latest", "--isolated"] }\n\n` +
+    `Requires Node.js LTS and a Chrome (stable+). Then ask your agent:\n` +
+    `  "extract the design system of <url>".\n\n`
   );
 }
 

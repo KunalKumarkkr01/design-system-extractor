@@ -29,35 +29,64 @@ produces.
 
 ---
 
-## Prerequisite: Chrome DevTools MCP (hard dependency)
+## Prerequisite: Chrome DevTools for agents (hard dependency)
 
-This skill drives a real Chrome instance through the **Chrome DevTools MCP server**
-(`chrome-devtools-mcp`, by the Chrome DevTools team:
-<https://github.com/ChromeDevTools/chrome-devtools-mcp>). Without it you cannot
-navigate, read computed styles, or take screenshots, and the skill cannot run.
+This skill drives a real Chrome instance through **Chrome DevTools for agents** — the
+official Chrome offering that ships *both* an MCP server and agent skills
+(`chrome-devtools-mcp`, by the Chrome DevTools team). Without it you cannot navigate,
+read computed styles, or take screenshots, and the skill cannot run.
+
+- Docs: <https://developer.chrome.com/docs/devtools/agents>
+- Source: <https://github.com/ChromeDevTools/chrome-devtools-mcp>
 
 Confirm the tools are available before starting — you should have tools like
 `navigate_page`, `take_snapshot`, `take_screenshot`, `evaluate_script`, and
-`resize_page` (they may be namespaced, e.g. `mcp__chrome-devtools__navigate_page`).
+`resize_page` (often namespaced, e.g. `mcp__chrome-devtools__navigate_page`).
 
-If they are missing, tell the user to install the server first, then stop:
+If they are missing, install one of the following, then stop and let the user restart
+their agent:
 
-- **Claude Code plugin** (recommended — installs the skill *and* wires up the MCP):
-  install the `design-system-extractor` plugin, which bundles a `chrome-devtools`
-  MCP server entry. Restart Claude Code so it starts.
-- **Manual MCP config** (any agent): add the server to the agent's MCP config:
-  ```json
-  {
-    "mcpServers": {
-      "chrome-devtools": { "command": "npx", "args": ["-y", "chrome-devtools-mcp@latest"] }
-    }
-  }
-  ```
-  Requires a recent Node.js and a local Chrome/Chromium install.
+1. **Official Chrome DevTools plugin (recommended)** — gives you the MCP server *and*
+   Chrome's own tool-usage skills, maintained by the Chrome team. In Claude Code:
+   ```text
+   /plugin marketplace add ChromeDevTools/chrome-devtools-mcp
+   /plugin install chrome-devtools-mcp@chrome-devtools-plugins
+   ```
+   Other agents (Gemini CLI, Codex, Copilot, …): see the docs link above.
 
-Do not attempt to fake the workflow with `WebFetch` or a static HTML grab — those miss
-computed styles, web fonts, JS-rendered content, and responsive behavior, which are the
-whole point.
+2. **This skill's plugin** — the `design-system-extractor` plugin bundles a
+   `chrome-devtools` MCP server entry, so installing it wires up the MCP too. If you
+   also install the official plugin above, keep only one `chrome-devtools` server to
+   avoid a duplicate.
+
+3. **Manual MCP config (any agent):**
+   ```json
+   {
+     "mcpServers": {
+       "chrome-devtools": { "command": "npx", "args": ["-y", "chrome-devtools-mcp@latest", "--isolated"] }
+     }
+   }
+   ```
+
+### Browser requirement
+
+`chrome-devtools-mcp` needs **Node.js LTS** and a **Chrome (current stable or newer)**.
+It uses your system Chrome by default and does **not** silently download one. If no
+Chrome is present, either install Chrome normally, or install a Chrome for Testing build
+and point the server at it:
+
+```bash
+npx puppeteer browsers install chrome   # installs a Chrome for Testing binary
+# then pass --executablePath <path> (or --channel stable) to chrome-devtools-mcp
+```
+
+Useful flags: `--isolated` (temporary, auto-cleaned profile — ideal for clean
+extraction), `--channel <stable|beta|dev|canary>`, `--headless`,
+`--executablePath <path>`, `--browser-url <url>` (attach to a running Chrome).
+
+Do not fake the workflow with `WebFetch` or a static HTML grab — those miss computed
+styles, web fonts, JS-rendered content, and responsive behavior, which are the whole
+point.
 
 ---
 
