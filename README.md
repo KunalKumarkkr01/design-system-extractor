@@ -136,6 +136,23 @@ A self-contained folder you can drop into another project or feed to another age
 
 ---
 
+## Example: a real extraction
+
+See [`examples/pico-css/`](./examples/pico-css/) for a complete run against
+[Pico CSS](https://picocss.com) (MIT-licensed, open source) — exactly the kind of output
+you get back:
+
+- **[`examples/pico-css/design.md`](./examples/pico-css/design.md)** — the full reference:
+  dark **and** light `--pico-*` token tables (resolved to hex), the typography scale
+  (Figtree / system-ui / Fira Code), components, responsive notes, and a drop-in CSS block.
+- **[`examples/pico-css/screenshots/`](./examples/pico-css/screenshots)** — the captured frames.
+
+| Hero — light | Hero — dark |
+|---|---|
+| ![Pico hero, light mode](https://raw.githubusercontent.com/KunalKumarkkr01/design-system-extractor/main/examples/pico-css/screenshots/03-hero-light.png) | ![Pico hero, dark mode](https://raw.githubusercontent.com/KunalKumarkkr01/design-system-extractor/main/examples/pico-css/screenshots/01-hero-dark.png) |
+
+Produced by running *"extract the design system of picocss.com"* through this skill.
+
 ## How it works
 
 1. Navigate to the URL and set a canonical desktop viewport.
