@@ -1,0 +1,37 @@
+name: CI
+
+# Validates the package on every push and PR to main. This job ("validate") is the
+# required status check for branch protection, so PRs can't merge unless it passes.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Syntax-check the CLI
+        run: node --check bin/cli.js
+
+      - name: Validate JSON manifests
+        run: |
+          for f in package.json .claude-plugin/plugin.json .claude-plugin/marketplace.json; do
+            node -e "JSON.parse(require('fs').readFileSync('$f','utf8')); console.log('ok: $f')"
+          done
+
+      - name: Smoke-test the installer
+        run: |
+          node bin/cli.js --dir "$RUNNER_TEMP/skills-test"
+          test -f "$RUNNER_TEMP/skills-test/design-system-extractor/SKILL.md"
+
+      - name: Verify publish contents
+        run: npm pack --dry-run

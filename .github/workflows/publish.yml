@@ -1,0 +1,53 @@
+name: Publish Package
+
+# Publishes the package when a GitHub Release is published (or via manual dispatch),
+# to BOTH the public npm registry and GitHub Packages.
+#
+# Requirements:
+#   - Repo secret NPM_TOKEN: an npm *automation* token (bypasses 2FA) for npmjs.org.
+#   - GitHub Packages uses the built-in GITHUB_TOKEN; no setup needed.
+#
+# Note: npm rejects re-publishing an existing version, so bump the version in
+# package.json before cutting a new release.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish-npm:
+    name: Publish to npm (npmjs.org)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-gpr:
+    name: Publish to GitHub Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@kunalkumarkkr01'
+      # GitHub Packages requires the package name to be scoped to the repo owner.
+      # The public npmjs package stays unscoped; here we scope it just for GPR.
+      - name: Scope package name for GitHub Packages
+        run: npm pkg set name=@kunalkumarkkr01/design-system-extractor
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
