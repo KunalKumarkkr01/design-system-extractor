@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./banner.png" alt="Banner" />
+</p>
+
 # design-system-extractor
 
 [![npm](https://img.shields.io/npm/v/design-system-extractor.svg)](https://www.npmjs.com/package/design-system-extractor)
